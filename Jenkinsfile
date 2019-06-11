@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools {
         nodejs 'node 12.4.0'
-        ansiColor 'xterm'
     }
     stages {
         stage('Install dependencies') {
