@@ -34,7 +34,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d --name alexis -p 8081:80 -p 2222:22 iliyan/docker-nginx-sshd'
+                sh 'sudo docker run -d --name alexis -p 8081:80 -p 2222:22 iliyan/docker-nginx-sshd'
             }
         }
     }
