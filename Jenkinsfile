@@ -34,8 +34,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                //copyArtifacts(projectName: 'public')
-                sh 'scp root:root@localhost:8008:/sites public'
+                dir('public')
+                sh 'docker cp . alexis:/sites/'
             }
         }
     }
