@@ -4,8 +4,9 @@ pipeline {
         nodejs 'node 12.4.0'
     }
     stages {
-        stage('Install dependencies') {
+        stage('Init & Install dependencies') {
             steps {
+                chuckNorris()
                 ansiColor('xterm') {
                     sh 'npm install'
                 }
@@ -42,6 +43,11 @@ pipeline {
         stage('Deploy with plugins') {
             steps {
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'localhost docker nginx', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ls /sites', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/sites', remoteDirectorySDF: false, removePrefix: 'public', sourceFiles: 'public/')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }
+        }
+        stage('Integration test') {
+            steps {
+                sh 'curl localhost:8008'
             }
         }
     }
