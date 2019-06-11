@@ -12,9 +12,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                ansiColor('xterm') {
-                    sh 'npm run build'
-                }
+                shWithXterm('npm run build')
             }
         }
         stage('Test') {
@@ -26,7 +24,6 @@ pipeline {
             steps {
                 junit 'tests-results/*.xml'
                 archiveArtifacts 'public/'
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public', reportFiles: 'index.html', reportName: 'Appli', reportTitles: ''])
             }
         }
 //        stage('Deploy with docker cp') {
