@@ -33,10 +33,23 @@ pipeline {
 //                }
 //            }
 //        }
+        stage('Remove site on server') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-nginx-ssh', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    def remote = [:]
+                    remote.name = 'docker nginx ssh'
+                    remote.host = 'localhost:2222'
+                    remote.user = userName
+                    remote.password = password
+                    remote.allowAnyHosts = true
+                    sshRemove remote: remote, script: "rm -rf /sites"
+                }
+            }
+        }
         stage('Deploy with plugins') {
             steps {
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'localhost docker nginx',
-                        transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ls /sites', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false,
+                        transfers: [sshTransfer(cleanRemote: true, excludes: '', execCommand: 'ls /sites', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false,
                                 patternSeparator: '[, ]+', remoteDirectory: '/sites', remoteDirectorySDF: false, removePrefix: 'public', sourceFiles: 'public/')], usePromotionTimestamp: false,
                         useWorkspaceInPromotion: false, verbose: true)])
             }
@@ -46,6 +59,9 @@ pipeline {
                 shWithXterm('curl localhost:8008')
             }
         }
+    }
+    post {
+        cleanWs()
     }
 }
 
