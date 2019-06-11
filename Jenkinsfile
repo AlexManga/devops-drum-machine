@@ -64,8 +64,7 @@ pipeline {
                             script: 'curl -s -o /dev/null -w %{http_code} localhost:8008',
                             returnStdout: true
                     ).trim()
-
-                    if (statusCode != 200) {
+                    if (statusCode != '200') {
                         error "Expected status code : 200 but was ${statusCode}"
                     }
                 }
