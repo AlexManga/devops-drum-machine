@@ -59,7 +59,16 @@ pipeline {
         }
         stage('Integration test') {
             steps {
-                shWithXterm('curl localhost:8008')
+                script {
+                    statusCode = sh(
+                            script: 'curl -s -o /dev/null -w %{http_code} localhost:8008',
+                            returnStdout: true
+                    ).trim()
+
+                    if (statusCode != 200) {
+                        unstable 'Curl does not respond 200'
+                    }
+                }
             }
         }
     }
