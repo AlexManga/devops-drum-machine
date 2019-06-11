@@ -34,7 +34,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'sudo docker run -d --name alexis -p 8081:80 -p 2222:22 iliyan/docker-nginx-sshd'
+                //copyArtifacts(projectName: 'public')
+                sh 'scp root:root@localhost:8008:/sites public'
             }
         }
     }
