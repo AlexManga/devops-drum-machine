@@ -1,34 +1,37 @@
 pipeline {
     agent any
+    tools {
+        nodejs 'node 12.4.0'
+        ansiColor 'xterm'
+    }
     stages {
-        stage('Checkout') {
-            git credentialsId: 'Github Alexis', url: 'https://github.com/AlexManga/devops-drum-machine'
-        }
         stage('Install dependencies') {
-            ansiColor('xterm') {
-                nodejs('node 12.4.0') {
+            steps {
+                ansiColor('xterm') {
                     sh 'npm install'
                 }
             }
         }
         stage('Build') {
-            ansiColor('xterm') {
-                nodejs('node 12.4.0') {
+            steps {
+                ansiColor('xterm') {
                     sh 'npm run build'
                 }
             }
         }
         stage('Test') {
-            ansiColor('xterm') {
-                nodejs('node 12.4.0') {
+            steps {
+                ansiColor('xterm') {
                     sh 'npm run test'
                 }
             }
         }
         stage('Publish result') {
-            junit 'tests-results/*.xml'
-            archiveArtifacts 'public/'
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public', reportFiles: 'index.html', reportName: 'Appli', reportTitles: ''])
+            steps {
+                junit 'tests-results/*.xml'
+                archiveArtifacts 'public/'
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public', reportFiles: 'index.html', reportName: 'Appli', reportTitles: ''])
+            }
         }
     }
     chuckNorris()
