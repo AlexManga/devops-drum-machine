@@ -26,6 +26,19 @@ pipeline {
                 archiveArtifacts 'public/'
             }
         }
+        stage('Remove site on server') {
+            steps {
+                def remote = [:]
+                withCredentials([usernamePassword(credentialsId: 'docker-nginx-ssh', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    remote.name = 'docker nginx ssh'
+                    remote.host = 'localhost:2222'
+                    remote.user = userName
+                    remote.password = password
+                    remote.allowAnyHosts = true
+                    sshRemove remote: remote, path: "/sites"
+                }
+            }
+        }
 //        stage('Deploy with docker cp') {
 //            steps {
 //                dir('public') {
@@ -33,19 +46,6 @@ pipeline {
 //                }
 //            }
 //        }
-        stage('Remove site on server') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-nginx-ssh', passwordVariable: 'password', usernameVariable: 'username')]) {
-                    def remote = [:]
-                    remote.name = 'docker nginx ssh'
-                    remote.host = 'localhost:2222'
-                    remote.user = userName
-                    remote.password = password
-                    remote.allowAnyHosts = true
-                    sshRemove remote: remote, script: "rm -rf /sites"
-                }
-            }
-        }
         stage('Deploy with plugins') {
             steps {
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'localhost docker nginx',
