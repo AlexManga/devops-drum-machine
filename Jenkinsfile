@@ -54,7 +54,7 @@ pipeline {
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'localhost docker nginx',
                         transfers: [sshTransfer(cleanRemote: true, excludes: '', execCommand: 'ls /sites', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false,
                                 patternSeparator: '[, ]+', remoteDirectory: '/sites', remoteDirectorySDF: false, removePrefix: 'public', sourceFiles: 'public/')], usePromotionTimestamp: false,
-                        useWorkspaceInPromotion: false, verbose: true)])
+                        useWorkspaceInPromotion: false, verbose: false)])
             }
         }
         stage('Integration test') {
