@@ -33,7 +33,7 @@ pipeline {
                         def remote = [:]
                         remote.name = 'docker nginx ssh'
                         remote.host = 'localhost'
-                        remote.port = '2222'
+                        remote.port = 2222
                         remote.user = userName
                         remote.password = password
                         remote.allowAnyHosts = true
