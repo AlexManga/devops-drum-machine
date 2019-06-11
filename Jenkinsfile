@@ -32,11 +32,16 @@ pipeline {
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public', reportFiles: 'index.html', reportName: 'Appli', reportTitles: ''])
             }
         }
-        stage('Deploy') {
+//        stage('Deploy with docker cp') {
+//            steps {
+//                dir('public') {
+//                    sh 'sudo docker cp . alexis:/sites/'
+//                }
+//            }
+//        }
+        stage('Deploy with plugins') {
             steps {
-                dir('public') {
-                    sh 'sudo docker cp . alexis:/sites/'
-                }
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'localhost docker nginx', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ls /sites', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/sites', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'public/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
             }
         }
     }
