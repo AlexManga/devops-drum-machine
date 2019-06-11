@@ -70,8 +70,8 @@ pipeline {
     }
 }
 
-def shWithXterm(command) {
+def shWithXterm(String command) {
     ansiColor('xterm') {
-        sh '$command'
+        sh "${command}"
     }
 }
