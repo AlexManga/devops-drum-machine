@@ -66,7 +66,7 @@ pipeline {
                     ).trim()
 
                     if (statusCode != 200) {
-                        unstable 'Curl does not respond 200'
+                        error "Expected status code : 200 but was ${statusCode}"
                     }
                 }
             }
