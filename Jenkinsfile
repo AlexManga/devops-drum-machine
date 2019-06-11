@@ -30,12 +30,8 @@ pipeline {
                 junit 'tests-results/*.xml'
                 archiveArtifacts 'public/'
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'public', reportFiles: 'index.html', reportName: 'Appli', reportTitles: ''])
+                chuckNorris
             }
-        }
-    }
-    post {
-        always {
-            chuckNorris
         }
     }
 }
