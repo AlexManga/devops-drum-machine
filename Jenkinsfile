@@ -33,5 +33,5 @@ pipeline {
             }
         }
     }
-    chuckNorris()
+    chuckNorris
 }
