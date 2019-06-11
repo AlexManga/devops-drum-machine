@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('public') {
-                    sh 'docker cp . alexis:/sites/'
+                    sh 'sudo docker cp . alexis:/sites/'
                 }
             }
         }
