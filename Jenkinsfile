@@ -8,9 +8,6 @@ pipeline {
             steps {
                 chuckNorris()
                 shWithXterm('npm install')
-//                ansiColor('xterm') {
-//                    sh 'npm install'
-//                }
             }
         }
         stage('Build') {
@@ -22,9 +19,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                ansiColor('xterm') {
-                    sh 'npm run test'
-                }
+                shWithXterm('npm run test')
             }
         }
         stage('Publish result') {
@@ -37,7 +32,7 @@ pipeline {
 //        stage('Deploy with docker cp') {
 //            steps {
 //                dir('public') {
-//                    sh 'sudo docker cp . alexis:/sites/'
+//                    shWithXterm('sudo docker cp . alexis:/sites/')
 //                }
 //            }
 //        }
@@ -51,7 +46,7 @@ pipeline {
         }
         stage('Integration test') {
             steps {
-                sh 'curl localhost:8008'
+                shWithXterm('curl localhost:8008')
             }
         }
     }
