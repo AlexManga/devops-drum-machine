@@ -32,7 +32,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'docker-nginx-ssh', passwordVariable: 'password', usernameVariable: 'username')]) {
                         def remote = [:]
                         remote.name = 'docker nginx ssh'
-                        remote.host = 'localhost:2222'
+                        remote.host = 'localhost'
+                        remote.port = '2222'
                         remote.user = userName
                         remote.password = password
                         remote.allowAnyHosts = true
@@ -69,8 +70,8 @@ pipeline {
     }
 }
 
-def shWithXterm(String command) {
+def shWithXterm(command) {
     ansiColor('xterm') {
-        sh "${command}"
+        sh '$command'
     }
 }
